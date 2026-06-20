@@ -1,9 +1,83 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="vi">
 <head>
-  <title>Test</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kurogen — Tạo video AI (Demo)</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>Hello Yegarde 🚀</h1>
+  <header class="site-header">
+    <div class="container">
+      <h1 class="logo">Kurogen</h1>
+      <nav class="nav">
+        <a href="#app">App</a>
+        <a href="#about">Giới thiệu</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" id="app">
+    <section class="hero">
+      <h2>Tạo video bằng AI</h2>
+      <p>Nhập API key và mô tả (prompt) để tạo video. Đây là bản demo — cần backend/proxy để gọi API thật.</p>
+    </section>
+
+    <section class="card">
+      <h3>Cấu hình API</h3>
+      <label>API Endpoint (ví dụ: https://your-server.example.com/generate)
+        <input id="apiEndpoint" placeholder="https://.../generate" />
+      </label>
+      <label>API Key (lưu local trên trình duyệt)
+        <input id="apiKey" placeholder="sk-..." />
+      </label>
+      <div class="hint">Lưu ý: không lưu API key quan trọng trên trang public. Tốt nhất dùng backend để giữ key an toàn.</div>
+      <div class="actions">
+        <button id="saveKey">Lưu API Key</button>
+        <button id="clearKey">Xóa API Key</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Tùy chọn tạo video</h3>
+      <label>Prompt (mô tả video)
+        <textarea id="prompt" rows="3" placeholder="Ví dụ: \"Một cảnh mặt trời mọc trên một thành phố tương lai\""></textarea>
+      </label>
+      <label>Thời lượng (giây)
+        <input id="duration" type="number" min="1" max="60" value="10" />
+      </label>
+      <label>Độ phân giải
+        <select id="resolution">
+          <option value="720p">1280x720 (720p)</option>
+          <option value="1080p">1920x1080 (1080p)</option>
+        </select>
+      </label>
+      <div class="actions">
+        <button id="create">Tạo video AI</button>
+        <button id="demo">Demo (video mẫu)</button>
+      </div>
+    </section>
+
+    <section class="card" id="resultCard" style="display:none">
+      <h3>Kết quả</h3>
+      <div id="status">Đang chờ thao tác...</div>
+      <div id="preview"></div>
+      <a id="downloadLink" href="#" download style="display:none">Tải video</a>
+    </section>
+
+    <section id="about" class="card">
+      <h3>Giới thiệu</h3>
+      <p>Mẫu web này là giao diện front-end cho một hệ thống "tạo video bằng AI". Nó lưu API key vào localStorage và gửi yêu cầu tới API endpoint bạn cấu hình (ví dụ server proxy của bạn).</p>
+      <p>Để hoạt động với API thật, bạn cần triển khai một backend (Express/Lambda/etc.) để gọi dịch vụ tạo video (OpenAI/Runway/Play.ht/StableVideo) và trả về URL video. Mình cũng thêm mã ví dụ backend trong thư mục <code>server/</code>.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Kurogen. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
