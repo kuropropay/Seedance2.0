@@ -1,0 +1,40 @@
+:root{
+  --bg:#071017;
+  --panel:#0f1720;
+  --muted:#9aa6b2;
+  --accent:#7c5cff;
+  --accent-2:#00e5a8;
+  --card-grad: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+  --radius:12px;
+  --glass: rgba(255,255,255,0.02);
+  color: #e6eef8;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:linear-gradient(180deg,#071017 0%, #071018 60%);}
+.app{display:flex;min-height:100vh}
+.sidebar{width:260px;padding:20px;background:linear-gradient(180deg, rgba(124,92,255,0.03), rgba(0,0,0,0.02));border-right:1px solid rgba(255,255,255,0.02)}
+.main{flex:1;padding:18px;overflow:auto}
+.topbar{display:flex;justify-content:space-between;margin-bottom:12px}
+.search input{padding:10px;border-radius:10px;background:var(--panel);border:1px solid rgba(255,255,255,0.02);color:inherit}
+
+.hero{display:flex;gap:20px;align-items:center}
+.hero-left{flex:1}
+.hero-right{width:480px}
+.lead{color:var(--muted)}
+
+.mockup{position:relative;border-radius:14px;padding:12px;background:var(--card-grad);border:1px solid rgba(255,255,255,0.03);overflow:hidden}
+#three-canvas{width:100%;height:320px;display:block;border-radius:10px;background:transparent}
+.mockup-overlay{position:absolute;left:14px;top:14px;padding:6px 8px;background:rgba(0,0,0,0.45);border-radius:8px;color:var(--muted);font-size:12px;z-index:2}
+.mockup-controls{position:absolute;right:12px;bottom:12px;display:flex;gap:8px;z-index:2}
+.small-btn{background:linear-gradient(90deg,var(--accent),#5e9eff);border:0;color:#06070a;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:600}
+.small-btn.outline{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+
+.card{background:var(--card-grad);padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);margin-top:18px}
+@media (max-width:900px){
+  .app{flex-direction:column}
+  .sidebar{display:none}
+  .hero-right{width:100%}
+  #three-canvas{height:220px}
+}
