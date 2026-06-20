@@ -3,10 +3,220 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Redirect — Seedance2.0</title>
-  <meta http-equiv="refresh" content="0; url=./test.html">
+  <title>KuroGenVideoツ — AI Text & Image to Video</title>
+  <meta name="description" content="KuroGenVideoツ - Tạo video bằng AI: Text to Video & Image to Video. Dark, modern, responsive UI." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
-  <p>Trang đã được chuyển hướng sang <a href="./test.html">test.html</a>. Nếu bạn không được chuyển hướng, bấm vào liên kết này.</p>
+  <div id="app" class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="logo">KG<span>ツ</span></div>
+        <div class="brand-name">KuroGenVideoツ</div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-link" data-page="home" aria-current="page">Trang chủ</button>
+        <button class="nav-link" data-page="text2video">Text → Video</button>
+        <button class="nav-link" data-page="image2video">Image → Video</button>
+        <button class="nav-link" data-page="history">Lịch sử</button>
+        <button class="nav-link" data-page="settings">Cài đặt</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="small">Models</div>
+        <div class="models-list">
+          <span class="chip">Seedance 2.0</span>
+          <span class="chip">Seedance 2.0 Fast</span>
+          <span class="chip">Kling 3.0</span>
+          <span class="chip">Veo 3.1</span>
+          <span class="chip">Nano Banana</span>
+        </div>
+        <div class="copyright">© <span id="year"></span> KuroGen</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="search">
+          <input id="quickPrompt" placeholder="Nhập prompt nhanh... (Enter để mở Text → Video)" />
+        </div>
+        <div class="actions">
+          <button id="themeToggle" class="icon-btn" aria-label="Toggle theme">🌓</button>
+          <button id="mobileMenu" class="icon-btn mobile-only" aria-label="Open menu">☰</button>
+        </div>
+      </header>
+
+      <!-- HOME with 3D hero -->
+      <section id="page-home" class="page page--active">
+        <div class="hero">
+          <div class="hero-left">
+            <h1>KuroGenVideoツ</h1>
+            <p class="lead">Tạo video bằng AI từ văn bản hoặc ảnh — giao diện dark, hiện đại, tương tác 3D.</p>
+            <div class="cta-group">
+              <button class="btn primary" data-nav="text2video">Bắt đầu (Text → Video)</button>
+              <button class="btn outline" data-nav="image2video">Image → Video</button>
+            </div>
+            <div class="features">
+              <div class="feature">
+                <strong>Models đa dạng</strong>
+                <span>Seedance, Kling, Veo, Nano Banana</span>
+              </div>
+              <div class="feature">
+                <strong>Responsive</strong>
+                <span>Web hoạt động tốt trên mobile & desktop</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-right">
+            <div class="mockup">
+              <div class="mockup-overlay">Interactive 3D Preview</div>
+              <canvas id="three-canvas" aria-hidden="true"></canvas>
+              <div class="mockup-controls">
+                <button id="spinBtn" class="small-btn">Spin</button>
+                <button id="pauseBtn" class="small-btn outline">Pause</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-text2video" class="page">
+        <div class="page-inner">
+          <h2>Text → Video</h2>
+          <div class="grid">
+            <form id="textForm" class="card form-card">
+              <label class="label">Prompt
+                <textarea id="textPrompt" rows="4" placeholder="Mô tả cảnh bạn muốn tạo..."></textarea>
+              </label>
+
+              <div class="row">
+                <label class="input-inline">Model
+                  <select id="modelSelectText"></select>
+                </label>
+                <label class="input-inline">Duration
+                  <select id="durationSelectText">
+                    <option value="5">5s</option>
+                    <option value="10" selected>10s</option>
+                    <option value="15">15s</option>
+                  </select>
+                </label>
+                <label class="input-inline">Resolution
+                  <select id="resolutionSelectText">
+                    <option value="720p">720p</option>
+                    <option value="1080p">1080p</option>
+                  </select>
+                </label>
+                <label class="input-inline">Aspect
+                  <select id="aspectSelectText">
+                    <option value="16:9">16:9</option>
+                    <option value="9:16">9:16</option>
+                    <option value="1:1">1:1</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="form-actions">
+                <button id="createTextBtn" class="btn primary">Tạo video</button>
+                <button type="button" id="demoTextBtn" class="btn outline">Xem demo</button>
+              </div>
+            </form>
+
+            <div class="card result-card" id="textResult">
+              <div class="status" id="textStatus">Chưa có kết quả</div>
+              <div class="preview" id="textPreview"></div>
+              <a id="textDownload" class="btn link" style="display:none" target="_blank" rel="noopener">Tải video</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-image2video" class="page">
+        <div class="page-inner">
+          <h2>Image → Video</h2>
+          <div class="grid">
+            <form id="imageForm" class="card form-card">
+              <label class="label">Upload ảnh (dùng làm nguồn)
+                <input id="imageInput" type="file" accept="image/*" />
+              </label>
+              <label class="label">Prompt (tùy chọn)
+                <textarea id="imagePrompt" rows="3" placeholder="Mô tả ý tưởng từ ảnh..."></textarea>
+              </label>
+
+              <div class="row">
+                <label class="input-inline">Model
+                  <select id="modelSelectImage"></select>
+                </label>
+                <label class="input-inline">Duration
+                  <select id="durationSelectImage">
+                    <option value="5">5s</option>
+                    <option value="10" selected>10s</option>
+                    <option value="15">15s</option>
+                  </select>
+                </label>
+                <label class="input-inline">Resolution
+                  <select id="resolutionSelectImage">
+                    <option value="720p">720p</option>
+                    <option value="1080p">1080p</option>
+                  </select>
+                </label>
+                <label class="input-inline">Aspect
+                  <select id="aspectSelectImage">
+                    <option value="16:9">16:9</option>
+                    <option value="9:16">9:16</option>
+                    <option value="1:1">1:1</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="form-actions">
+                <button id="createImageBtn" class="btn primary">Tạo video</button>
+                <button type="button" id="demoImageBtn" class="btn outline">Xem demo</button>
+              </div>
+            </form>
+
+            <div class="card result-card" id="imageResult">
+              <div class="status" id="imageStatus">Chưa có kết quả</div>
+              <div class="preview" id="imagePreview"></div>
+              <a id="imageDownload" class="btn link" style="display:none" target="_blank" rel="noopener">Tải video</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-history" class="page">
+        <div class="page-inner">
+          <h2>Lịch sử tạo video</h2>
+          <div id="historyList" class="history-list card"></div>
+          <div class="hint small">Lịch sử được lưu local (trình duyệt). Bạn có thể xóa hoặc tải video từ lịch sử.</div>
+        </div>
+      </section>
+
+      <section id="page-settings" class="page">
+        <div class="page-inner">
+          <h2>Cài đặt</h2>
+          <div class="card form-card">
+            <label class="label">API Endpoint (ví dụ: https://your-proxy.example.com/generate)
+              <input id="settingEndpoint" placeholder="https://..." />
+            </label>
+            <label class="label">API Key (sẽ được lưu localStorage — KHÔNG recommend cho production)
+              <input id="settingApiKey" placeholder="sk-..." />
+            </label>
+            <div class="form-actions">
+              <button id="saveSettings" class="btn primary">Lưu</button>
+              <button id="clearSettings" class="btn outline">Xóa</button>
+            </div>
+            <div class="hint small">Tốt nhất: backend giữ API key trong ENV, frontend chỉ gọi proxy.</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/three@0.153.0/build/three.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
